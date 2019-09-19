@@ -4,11 +4,13 @@
 function random(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
+
+  // The maximum is exclusive and the minimum is inclusive
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function generateLetter() {
-  const code = random(97, 122);
+  const code = random(97, 123); // ASCII char codes
   return String.fromCharCode(code);
 }
 
@@ -23,15 +25,15 @@ class Member {
   }
 
   fitness() {
-    let score = 0;
+    let matches = 0;
 
     for (let i = 0; i < this.keys.length; i += 1) {
       if (this.keys[i] === this.target[i]) {
-        score += 1;
+        matches += 1;
       }
     }
 
-    return score / this.target.length;
+    return matches / this.target.length;
   }
 
   crossover(partner) {
@@ -52,6 +54,8 @@ class Member {
 
   mutate(mutationRate) {
     for (let i = 0; i < this.keys.length; i += 1) {
+      // If below predefined mutation rate,
+      // generate a new random letter on this position.
       if (Math.random() < mutationRate) {
         this.keys[i] = generateLetter();
       }
@@ -96,11 +100,11 @@ class Population {
   _reproduce(matingPool) {
     for (let i = 0; i < this.members.length; i += 1) {
       // Pick 2 random members/partners from the mating pool
-      const partnerA = matingPool[random(0, matingPool.length - 1)];
-      const partnerB = matingPool[random(0, matingPool.length - 1)];
+      const parentA = matingPool[random(0, matingPool.length)];
+      const parentB = matingPool[random(0, matingPool.length)];
 
       // Perform crossover
-      const child = partnerA.crossover(partnerB);
+      const child = parentA.crossover(parentB);
 
       // Perform mutation
       child.mutate(this.mutationRate);
@@ -112,12 +116,15 @@ class Population {
 
 // Init function
 function generate(populationSize, target, mutationRate, generations) {
+  // Create a population and evolve for N generations
   const population = new Population(populationSize, target, mutationRate);
   population.evolve(generations);
 
+  // Get the typed words from all members and find if someone was able to type the target
   const membersKeys = population.members.map((m) => m.keys.join(''));
   const perfectCandidatesNum = membersKeys.find((w) => w === target);
 
+  // Print the results
   console.log(membersKeys);
   console.log(`${perfectCandidatesNum ? perfectCandidatesNum.length : 0} member(s) typed "${target}"`);
 }
