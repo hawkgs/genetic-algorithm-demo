@@ -87,6 +87,7 @@ class Population {
     this.members.forEach((m) => {
       // The fitter he/she is, the more often will be present in the mating pool
       // i.e. increasing the chances of selection
+      // If fitness == 0, add just one member
       const f = Math.floor(m.fitness() * 100) || 1;
 
       for (let i = 0; i < f; i += 1) {
