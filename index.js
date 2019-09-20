@@ -100,7 +100,7 @@ class Population {
 
   _reproduce(matingPool) {
     for (let i = 0; i < this.members.length; i += 1) {
-      // Pick 2 random members/partners from the mating pool
+      // Pick 2 random members/parent from the mating pool
       const parentA = matingPool[random(0, matingPool.length)];
       const parentB = matingPool[random(0, matingPool.length)];
 
