@@ -123,7 +123,7 @@ function generate(populationSize, target, mutationRate, generations) {
 
   // Get the typed words from all members and find if someone was able to type the target
   const membersKeys = population.members.map((m) => m.keys.join(''));
-  const perfectCandidatesNum = membersKeys.find((w) => w === target);
+  const perfectCandidatesNum = membersKeys.filter((w) => w === target);
 
   // Print the results
   console.log(membersKeys);
